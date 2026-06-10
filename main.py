@@ -12,7 +12,6 @@ with open("spam_model.pkl", "rb") as f:
 with open("vectorizer.pkl", "rb") as f:
     vectorizer = pickle.load(f)
 
-# Create FastAPI app
 app = FastAPI(title="Spam Classifier API")
 
 # Input schema
@@ -30,16 +29,12 @@ def home():
 @app.post("/predict")
 def predict(message: Message):
 
-    # Convert text to vector
     text_vector = vectorizer.transform([message.text])
 
-    # Predict
     prediction = model.predict(text_vector)[0]
 
-    # Probability
     probability = model.predict_proba(text_vector)[0].max()
 
-    # Result
     result = "spam" if prediction == 1 else "not spam"
 
     return {
