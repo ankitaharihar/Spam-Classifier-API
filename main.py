@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
 import uvicorn
+import os
 
 # Load model
 with open("spam_model.pkl", "rb") as f:
@@ -49,4 +50,8 @@ def predict(message: Message):
 
 # Run app
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8000))
+    )
